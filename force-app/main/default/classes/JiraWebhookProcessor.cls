@@ -143,6 +143,10 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
             Map<String, Object> issueData = (Map<String, Object>) payload.get('issue');
             // Update issue using helper method
             Jira_Issue__c issueToUpdate = updateIssueRecord(issueData);
+
+            // Set context flag to avoid trigger recursion
+            JiraWebhookContext.isWebhookContext = true;
+
             // Upsert issue record
             upsert issueToUpdate Issue_Key__c;
             // Log success message
@@ -230,6 +234,10 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
             Map<String, Object> projectData = (Map<String, Object>) payload.get('project');
             // Build project record
             Jira_Project__c project = updateProjectRecord(projectData);
+
+            // Set context flag to avoid trigger recursion
+            JiraWebhookContext.isWebhookContext = true;
+            
             // Upsert project record
             upsert project Project_Key__c;
             // Log success message
