@@ -112,6 +112,9 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
             
             // 2. Create a new Jira_Issue__c record using the helper method
             Jira_Issue__c newIssue = createIssueRecord(issueData);
+
+            // Set context flag to avoid trigger recursion
+            JiraWebhookContext.isWebhookContext = true;
             
             // 3. Insert the new record
             insert newIssue;
@@ -196,6 +199,9 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
 
             // Create project record
             Jira_Project__c project = createProjectRecord(projectData);
+
+            // Set context flag to avoid trigger recursion
+            JiraWebhookContext.isWebhookContext = true;
 
             // Insert project record
             insert project;
