@@ -26,9 +26,27 @@ global without sharing class WebhookResource {
      */
     @HttpPost
     global static ResponseWrapper doPost() {
-        // TODO: Implement webhook processing logic
-        return new ResponseWrapper('error', 'Method not implemented');
+
+        // Get REST request and response objects
+        RestRequest request = RestContext.request;
+        System.debug ('request: ' + request);
+        RestResponse response = RestContext.response;
+        System.debug ('response: ' + response);
+        
+        try{            
+            // Extract webhook's URI (what comes after .../apexrest in URL)
+            String webhookType = getWebhookTypeFromPath(request.requestURI);
+            System.debug('webhookType: ' + webhookType);
+
+            // Process the webhook if successful, return success message
+            WebhookFactory.processWebhook(webhookType, request);
+
+            return new ResponseWrapper('success', 'Webhook processed successfully');
+        } catch (Exception e) {
+            return new ResponseWrapper('error', e.getMessage());
+        }
     }
+        
     
     /**
      * @description Extracts the webhook type from the URL path
