@@ -1,13 +1,10 @@
 /**
  * @description REST resource to handle incoming webhooks from various systems
  * Current implementation supports Jira webhooks at /webhook/jira
- * 
- * STUDENT TASK:
- * Complete the doPost method implementation to process incoming webhooks
- * 
+ *  
  * IMPORTANT NOTE: without sharing is used to avoid sharing issues with the Jira_Issue__c and Jira_Project__c objects but it is not a good practice
  * 
- * @author Student Name
+ * @author Malcolm Philips
  */
 @RestResource(urlMapping='/webhook/*')
 global without sharing class WebhookResource {
@@ -29,9 +26,7 @@ global without sharing class WebhookResource {
 
         // Get REST request and response objects
         RestRequest request = RestContext.request;
-        System.debug ('request: ' + request);
         RestResponse response = RestContext.response;
-        System.debug ('response: ' + response);
         
         try{            
             // Extract webhook's URI (what comes after .../apexrest in URL)
@@ -54,7 +49,7 @@ global without sharing class WebhookResource {
      * @return The webhook type (e.g., "jira")
      */
     private static String getWebhookTypeFromPath(String path) {
-        System.debug('getWebhookTypeFromPath: ' + path);
+        
         // Expected formats: /webhook/jira or /services/apexrest/webhook/jira
         if (path == null) {
             return '';
@@ -66,12 +61,10 @@ global without sharing class WebhookResource {
         if (webhookIndex >= 0) {
             // Extract the part after /webhook/
             String remaining = path.substring(webhookIndex + 9);
-            System.debug('remaining: ' + remaining);
             
             // If there are additional slashes, only take the first segment
             Integer nextSlash = remaining.indexOf('/');
             if (nextSlash > 0) {
-                System.debug('nextSlash: ' + nextSlash);
                 return remaining.substring(0, nextSlash).toLowerCase();
             }
             

@@ -2,13 +2,9 @@
  * @description Processor for Jira webhooks
  * Handles issue and project events from Jira
  * 
- * STUDENT TASK:
- * Implement the IWebhookProcessor interface to handle Jira webhook events
- * You'll need to process various events like issue/project creation, updates, and deletions
- * 
  * IMPORTANT NOTE: without sharing is used to avoid sharing issues with the Jira_Issue__c and Jira_Project__c objects but it is not a good practice
  * 
- * @author Student Name
+ * @author Malcolm Philips
  */
 public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
     
@@ -87,7 +83,6 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
             } else if (webhookEvent == EVENT_PROJECT_DELETED) {
                 processProjectDeleted(payload);
             }
-
             
         } catch (Exception e) {
             System.debug(LoggingLevel.ERROR, 'Error processing webhook: ' + e.getMessage());
@@ -237,7 +232,7 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
 
             // Set context flag to avoid trigger recursion
             JiraWebhookContext.isWebhookContext = true;
-            
+
             // Upsert project record
             upsert project Project_Key__c;
             // Log success message
@@ -256,7 +251,7 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
      * Implement logic to delete a Jira_Project__c record
      */
     private void processProjectDeleted(Map<String, Object> payload) {
-        // TODO: Implement project deletion logic
+
                 try{
             // Get project data
             Map<String, Object> projectData = (Map<String, Object>) payload.get('project');
@@ -293,13 +288,12 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
      * 2. Map the fields to a new Jira_Issue__c record
      */
     private Jira_Issue__c createIssueRecord(Map<String, Object> issueData) {
-        // TODO: Implement issue record creation logic
+
         // Extract component maps
         Map<String, Object> fields = (Map<String, Object>) issueData.get('fields');
         Map<String, Object> project = (Map<String, Object>) fields.get('project');
         Map<String, Object> status = (Map<String, Object>) fields.get('status');
         Map<String, Object> issueType = (Map<String, Object>) fields.get('issuetype');
-
         
         Jira_Issue__c issue = new Jira_Issue__c();
         issue.Issue_Key__c = (String) issueData.get('key');
@@ -309,7 +303,6 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
         issue.Description__c = (String) fields.get('description') != null ? (String) fields.get('description') : null;
         issue.Status__c = status != null ? (String)status.get('name') : null;
         issue.Issue_Type__c = issueType != null ? (String) issueType.get('name') : null;
-
         
         // Add other fields as needed
         if (project !=null){
