@@ -257,7 +257,7 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
             Map<String, Object> projectData = (Map<String, Object>) payload.get('project');
 
             // Check for existing project
-            String projectId = (String) projectData.get('id');
+            String projectId = String.valueOf(projectData.get('id'));
         
             List<Jira_Project__c> existingProjects = [SELECT Id FROM Jira_Project__c WHERE Project_ID__c = :projectId LIMIT 1];
             if (existingProjects == null){
@@ -306,7 +306,7 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
         
         // Add other fields as needed
         if (project !=null){
-            List<Jira_Project__c> relatedProject = [SELECT Id FROM Jira_Project__c WHERE Project_ID__c = :(String) project.get('id') LIMIT 1];
+            List<Jira_Project__c> relatedProject = [SELECT Id FROM Jira_Project__c WHERE Project_ID__c = :(String.valueOf(project.get('id'))) LIMIT 1];
             if (!relatedProject.isEmpty()){
                 issue.Jira_Project__c = relatedProject[0].Id;        
             }
@@ -375,7 +375,7 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
         Jira_Project__c project = new Jira_Project__c();
         project.Name = (String) projectData.get('name');
         project.Project_Name__c = (String) projectData.get('name');
-        project.Project_ID__c = (String) projectData.get('id');
+        project.Project_ID__c = String.valueOf(projectData.get('id'));
         project.Project_Key__c = (String) projectData.get('key');
         project.Description__c = (String) projectData.get('description');
 
@@ -394,7 +394,7 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
     private Jira_Project__c updateProjectRecord(Map<String, Object> projectData) {
 
         // Check for existing project
-        String projectId = (String) projectData.get('id');
+        String projectId = String.valueOf(projectData.get('id'));
         
         List<Jira_Project__c> existingProjects = [SELECT Id, Project_ID__c, Project_Key__c FROM Jira_Project__c WHERE Project_ID__c = :projectId LIMIT 1];
         if (existingProjects.isEmpty()){
