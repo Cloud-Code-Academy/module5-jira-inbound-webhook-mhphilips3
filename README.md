@@ -1,3 +1,8 @@
+Malcolm's notes:
+
+### Preventing Trigger Recursion from Jira Webhooks
+I'm using the same org from HW 4, so it already includes triggers on Jira_Issue__c and Jira_Project__c to sync new records from Salesforce to Jira. To prevent those triggers from firing when the source of truth is Jira, I've included an additional class, `JiraWebhookContext`, which contains a single static flag (`isWebhookContext`).  This is defaulted to false, but set to true before insterts/upserts during webhook handling.
+
 # Cloud Code Academy - Integration Developer Program
 
 ## Lesson 5: Jira Integration with Salesforce (Part 2)
