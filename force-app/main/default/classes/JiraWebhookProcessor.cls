@@ -328,7 +328,6 @@ public without sharing class JiraWebhookProcessor implements IWebhookProcessor {
         
         // Extract component maps
         Map<String, Object> fields = (Map<String, Object>) issueData.get('fields');
-        Map<String, Object> project = (Map<String, Object>) fields.get('project');
         Map<String, Object> status = (Map<String, Object>) fields.get('status');
         Map<String, Object> issueType = (Map<String, Object>) fields.get('issuetype');
 

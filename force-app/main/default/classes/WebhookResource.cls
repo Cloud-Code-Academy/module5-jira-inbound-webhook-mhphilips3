@@ -24,14 +24,12 @@ global without sharing class WebhookResource {
     @HttpPost
     global static ResponseWrapper doPost() {
 
-        // Get REST request and response objects
+        // Get REST request objects
         RestRequest request = RestContext.request;
-        RestResponse response = RestContext.response;
         
         try{            
             // Extract webhook's URI (what comes after .../apexrest in URL)
             String webhookType = getWebhookTypeFromPath(request.requestURI);
-            System.debug('webhookType: ' + webhookType);
 
             // Process the webhook if successful, return success message
             WebhookFactory.processWebhook(webhookType, request);
